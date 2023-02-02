@@ -70,7 +70,7 @@
     "fix-style": "phpcbf -q --parallel=$(nproc) --standard=coding-standard.xml src tests --ignore=tests/coverage/*",
     "normalize-dry-run": "composer normalize --dry-run",
     "phpstan": "phpstan --no-progress",
-    "phpunit": "XDEBUG_MODE=coverage phpunit --coverage-text",
+    "phpunit": "XDEBUG_MODE=coverage phpunit --coverage-text --coverage-html=tests/coverage",
     "phpunit-ci-coverage": "XDEBUG_MODE=coverage phpunit --coverage-xml=/tmp/coverage/coverage-xml --log-junit=/tmp/coverage/junit.xml --coverage-text=/tmp/coverage/phpunit.txt"
   }
 }
