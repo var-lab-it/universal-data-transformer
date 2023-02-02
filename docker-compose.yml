@@ -1,0 +1,19 @@
+version: '3.9'
+services:
+  php:
+    build:
+      target: php_dev
+      context: .
+    environment:
+      XDEBUG_MODE: "off"
+      XDEBUG_CONFIG: >-
+        client_host=host.docker.internal
+        client_port=9003
+        idekey=PHPSTORM
+      PHP_IDE_CONFIG: "serverName=universal-data-transformer"
+      TIMEZONE: Europe/Berlin
+      PS1: '[universal-data-transformer]::$$(pwd) # '
+    volumes:
+      - ./:/var/www/html
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
