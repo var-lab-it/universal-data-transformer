@@ -20,7 +20,10 @@
     "ext-iconv": "*",
     "doctrine/dbal": "^3.5",
     "symfony/console": "^6.2",
+    "symfony/dependency-injection": "^6.2",
     "symfony/dotenv": "^6.2",
+    "symfony/filesystem": "^6.2",
+    "symfony/validator": "^6.2",
     "symfony/yaml": "^6.2"
   },
   "require-dev": {
@@ -38,6 +41,7 @@
     "phpunit/phpunit": "9.5.16",
     "psalm/plugin-phpunit": "^0.16.1",
     "slevomat/coding-standard": "^8.4",
+    "spatie/phpunit-snapshot-assertions": "^4.2",
     "squizlabs/php_codesniffer": "^3.7",
     "thecodingmachine/phpstan-safe-rule": "^1.2"
   },
@@ -70,7 +74,7 @@
     "fix-style": "phpcbf -q --parallel=$(nproc) --standard=coding-standard.xml src tests --ignore=tests/coverage/*",
     "normalize-dry-run": "composer normalize --dry-run",
     "phpstan": "phpstan --no-progress",
-    "phpunit": "XDEBUG_MODE=coverage phpunit --coverage-text --coverage-html=tests/coverage",
+    "phpunit": "XDEBUG_MODE=coverage,debug phpunit --coverage-text --coverage-html=tests/coverage",
     "phpunit-ci-coverage": "XDEBUG_MODE=coverage phpunit --coverage-xml=/tmp/coverage/coverage-xml --log-junit=/tmp/coverage/junit.xml --coverage-text=/tmp/coverage/phpunit.txt"
   }
 }

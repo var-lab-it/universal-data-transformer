@@ -4,27 +4,29 @@ declare(strict_types=1);
 
 namespace App\Tests\IntegrationTests\Command;
 
-use App\Command\HelloWorldCommand;
+use App\Command\DataTransformCommand;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
-class HelloWorldCommandTest extends TestCase
+class DataTransformCommandTest extends TestCase
 {
     public function testExecute(): void
     {
         $app = new Application();
-        $app->add(new HelloWorldCommand());
+        $app->add(new DataTransformCommand());
 
-        $cmd = $app->find('world:hello');
+        $cmd = $app->find('data:transform');
 
         $cmdTester = new CommandTester($cmd);
-        $cmdTester->execute([]);
+        $cmdTester->execute([
+            'config-file' => \dirname(__DIR__, 2) . '/testfiles/exampl.yaml',
+        ]);
 
         $cmdTester->assertCommandIsSuccessful();
 
         $output = $cmdTester->getDisplay();
 
-        self::assertStringContainsString('Hello world!', $output);
+        self::assertStringContainsString('Loading configuration from:', $output);
     }
 }
