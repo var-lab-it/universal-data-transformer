@@ -1,6 +1,7 @@
 #!/usr/bin/env php
 <?php
 
+use App\Command\DataTransformCommand;
 use App\Command\HelloWorldCommand;
 use Symfony\Component\Console\Application;
 
@@ -10,5 +11,8 @@ $application = new Application();
 
 $application
     ->add(new HelloWorldCommand());
+
+$application
+    ->add(new DataTransformCommand());
 
 $application->run();
