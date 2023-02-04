@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace App\Config\Database;
 
+use App\Config\SectionConfigurationInterface;
 use App\Exception\InvalidDatabaseConnectionException;
 use App\Exception\InvalidDatabaseDriverException;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validation;
 
-abstract class AbstractDatabaseConfiguration
+abstract class AbstractDatabaseConfiguration implements SectionConfigurationInterface
 {
     public const DRIVER_PDO_MYSQL = 'pdo_mysql';
 
@@ -17,9 +18,6 @@ abstract class AbstractDatabaseConfiguration
         self::DRIVER_PDO_MYSQL => PdoMySqlConnection::class,
     ];
 
-    /**
-     * @throws InvalidDatabaseDriverException
-     */
     public function __construct(
         private readonly string $driver,
         private readonly string $host,
@@ -38,9 +36,10 @@ abstract class AbstractDatabaseConfiguration
      *     password: string,
      * } $config
      *
-     * @return AbstractDatabaseConfiguration|PdoMySqlConnection
+     * @return AbstractDatabaseConfiguration
      *
      * @throws InvalidDatabaseConnectionException
+     * @throws InvalidDatabaseDriverException
      */
     public static function fromConfig(array $config): self
     {

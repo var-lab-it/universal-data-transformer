@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Config;
 
 use App\Config\Database\AbstractDatabaseConfiguration;
+use App\Config\Transformation\AbstractTransformationConfiguration;
 use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Yaml\Yaml;
@@ -15,6 +16,8 @@ class Configuration
      * @var array<int|string, array<int|string, array<int|string>>>
      */
     private array $configurationArray = [];
+
+    private AbstractTransformationConfiguration $transformationConfiguration;
 
     private AbstractDatabaseConfiguration $databaseConfiguration;
 
@@ -34,6 +37,11 @@ class Configuration
     public function getDatabaseConfiguration(): AbstractDatabaseConfiguration
     {
         return $this->databaseConfiguration;
+    }
+
+    public function getTransformationConfiguration(): AbstractTransformationConfiguration
+    {
+        return $this->transformationConfiguration;
     }
 
     /**
@@ -61,5 +69,8 @@ class Configuration
          * } $dbConfigArray */
         $dbConfigArray               = $this->getConfigurationFromYaml()['database']['connection'];
         $this->databaseConfiguration = AbstractDatabaseConfiguration::fromConfig($dbConfigArray);
+
+        $transformationConfigArray         = $this->getConfigurationFromYaml()['transformation'];
+        $this->transformationConfiguration = AbstractTransformationConfiguration::fromConfig($transformationConfigArray);
     }
 }

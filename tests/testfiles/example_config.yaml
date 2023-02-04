@@ -1,0 +1,17 @@
+database:
+  connection:
+    driver: pdo_mysql
+    host: localhost
+    database_name: example_db
+    user: test
+    password: test
+
+transformation:
+  source: database
+  target: WordPress
+  mapping:
+    post:
+      title: database.news.title
+      pubDate: database.news.createdAt
+      content: database.news.content
+      excerpt: database.news.excerpt

@@ -31,7 +31,7 @@ class ConfigurationTest extends TestCase
             ->willReturn(true);
 
         $config = new Configuration(
-            \dirname(__DIR__, 2) . '/testfiles/exampl.yaml',
+            \dirname(__DIR__, 2) . '/testfiles/example_config.yaml',
             $this->filesystemMock,
         );
 
@@ -71,7 +71,7 @@ class ConfigurationTest extends TestCase
             ->willReturn(true);
 
         $config = new Configuration(
-            \dirname(__DIR__, 2) . '/testfiles/exampl.yaml',
+            \dirname(__DIR__, 2) . '/testfiles/example_config.yaml',
             $this->filesystemMock,
         );
 

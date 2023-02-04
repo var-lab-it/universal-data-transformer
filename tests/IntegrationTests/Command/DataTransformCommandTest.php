@@ -20,7 +20,7 @@ class DataTransformCommandTest extends TestCase
 
         $cmdTester = new CommandTester($cmd);
         $cmdTester->execute([
-            'config-file' => \dirname(__DIR__, 2) . '/testfiles/exampl.yaml',
+            'config-file' => \dirname(__DIR__, 2) . '/testfiles/example_config.yaml',
         ]);
 
         $cmdTester->assertCommandIsSuccessful();
