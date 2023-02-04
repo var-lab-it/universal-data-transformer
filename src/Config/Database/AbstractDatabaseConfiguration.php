@@ -27,7 +27,6 @@ abstract class AbstractDatabaseConfiguration
         private readonly string $user,
         private readonly string $password,
     ) {
-        $this->validate();
     }
 
     /**
@@ -58,16 +57,19 @@ abstract class AbstractDatabaseConfiguration
         $violations = $validator->validate($config, $constraint);
 
         if (\count($violations) > 0) {
-            $errorMessage = 'The configuration for the database connection is invalid:';
-
-            foreach ($violations as $violation) {
-                $errorMessage .= $violation->getMessage() . ' ' . $violation->getCause() . PHP_EOL;
-            }
+            $errorMessage = 'The configuration for the database connection is invalid.';
 
             throw new InvalidDatabaseConnectionException($errorMessage);
         }
 
         $driver = $config['driver'];
+
+        if (!isset(self::SUPPORTED_DRIVERS[$driver])) {
+            throw new InvalidDatabaseDriverException(\sprintf(
+                'The database driver "%s" is not supported.',
+                $driver,
+            ));
+        }
 
         $classFQCN = self::SUPPORTED_DRIVERS[$driver];
 
@@ -103,20 +105,5 @@ abstract class AbstractDatabaseConfiguration
     public function getUser(): string
     {
         return $this->user;
-    }
-
-    /**
-     * @throws InvalidDatabaseDriverException
-     */
-    protected function validate(): bool
-    {
-        if (!isset(self::SUPPORTED_DRIVERS[$this->getDriver()])) {
-            throw new InvalidDatabaseDriverException(\sprintf(
-                'The database driver %s is not supported.',
-                $this->getDriver(),
-            ));
-        }
-
-        return true;
     }
 }
