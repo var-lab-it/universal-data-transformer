@@ -53,23 +53,23 @@ class ConfigurationTest extends TestCase
         self::assertEquals('WordPress', $transformationConfig->getTarget());
         self::assertEquals([
             'post' => [
-                'title' => [
-                    'table' => 'news',
+                'title'   => [
+                    'table'  => 'news',
                     'column' => 'title',
                 ],
                 'pubDate' => [
-                    'table' => 'news',
+                    'table'  => 'news',
                     'column' => 'created_at',
                 ],
                 'content' => [
-                    'table' => 'news',
+                    'table'  => 'news',
                     'column' => 'content',
                 ],
                 'excerpt' => [
-                    'table' => 'news',
+                    'table'  => 'news',
                     'column' => 'excerpt',
                 ],
-            ]
+            ],
         ], $transformationConfig->getMapping());
     }
 
