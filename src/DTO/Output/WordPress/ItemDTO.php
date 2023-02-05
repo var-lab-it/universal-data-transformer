@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\DTO\Output\WordPress;
 
-class Item
+class ItemDTO
 {
     public const TYPE_POST = 'post';
 

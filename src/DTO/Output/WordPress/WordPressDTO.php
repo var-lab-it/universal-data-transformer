@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\DTO\Output\WordPress;
 
-class WordPress
+class WordPressDTO
 {
     private string $wxrVersion = '1.2';
     private string $generator  = 'https://github.com/var-lab-it/universal-data-transformer';
 
     /**
-     * @var array<Item>
+     * @var array<ItemDTO>
      */
     private array $items = [];
 
@@ -25,14 +25,14 @@ class WordPress
     }
 
     /**
-     * @return array<Item>
+     * @return array<ItemDTO>
      */
     public function getItems(): array
     {
         return $this->items;
     }
 
-    public function addItem(Item $item): self
+    public function addItem(ItemDTO $item): self
     {
         if (!isset($this->items[$item->getId()])) {
             $this->items[$item->getId()] = $item;
@@ -41,7 +41,7 @@ class WordPress
         return $this;
     }
 
-    public function removeItem(Item $item): self
+    public function removeItem(ItemDTO $item): self
     {
         if (isset($this->items[$item->getId()])) {
             unset($this->items[$item->getId()]);
