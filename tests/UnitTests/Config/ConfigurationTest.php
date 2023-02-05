@@ -47,6 +47,30 @@ class ConfigurationTest extends TestCase
         self::assertEquals('example_db', $dbConfig->getDatabaseName());
         self::assertEquals('test', $dbConfig->getUser());
         self::assertEquals('test', $dbConfig->getPassword());
+
+        $transformationConfig = $config->getTransformationConfiguration();
+        self::assertEquals('database', $transformationConfig->getSource());
+        self::assertEquals('WordPress', $transformationConfig->getTarget());
+        self::assertEquals([
+            'post' => [
+                'title' => [
+                    'table' => 'news',
+                    'column' => 'title',
+                ],
+                'pubDate' => [
+                    'table' => 'news',
+                    'column' => 'created_at',
+                ],
+                'content' => [
+                    'table' => 'news',
+                    'column' => 'content',
+                ],
+                'excerpt' => [
+                    'table' => 'news',
+                    'column' => 'excerpt',
+                ],
+            ]
+        ], $transformationConfig->getMapping());
     }
 
     public function testLoadWithNotExistingFile(): void
@@ -80,6 +104,6 @@ class ConfigurationTest extends TestCase
 
         $result = $method->invoke($config);
 
-        self::assertMatchesJsonSnapshot($result);
+        $this->assertMatchesJsonSnapshot($result);
     }
 }

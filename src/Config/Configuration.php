@@ -70,7 +70,8 @@ class Configuration
         $dbConfigArray               = $this->getConfigurationFromYaml()['database']['connection'];
         $this->databaseConfiguration = AbstractDatabaseConfiguration::fromConfig($dbConfigArray);
 
-        $transformationConfigArray         = $this->getConfigurationFromYaml()['transformation'];
+        $transformationConfigArray = $this->getConfigurationFromYaml()['transformation'];
+        /** @phpstan-ignore-next-line */
         $this->transformationConfiguration = AbstractTransformationConfiguration::fromConfig($transformationConfigArray);
     }
 }

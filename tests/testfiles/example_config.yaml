@@ -11,7 +11,15 @@ transformation:
   target: WordPress
   mapping:
     post:
-      title: database.news.title
-      pubDate: database.news.createdAt
-      content: database.news.content
-      excerpt: database.news.excerpt
+      title:
+        table: news
+        column: title
+      pubDate:
+        table: news
+        column: created_at
+      content:
+        table: news
+        column: content
+      excerpt:
+        table: news
+        column: excerpt

@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace App\Config\Database;
 
-use App\Config\SectionConfigurationInterface;
 use App\Exception\InvalidDatabaseConnectionException;
 use App\Exception\InvalidDatabaseDriverException;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validation;
 
-abstract class AbstractDatabaseConfiguration implements SectionConfigurationInterface
+abstract class AbstractDatabaseConfiguration
 {
     public const DRIVER_PDO_MYSQL = 'pdo_mysql';
 

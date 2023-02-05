@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace App\Config\Transformation;
 
-use App\Config\SectionConfigurationInterface;
 use App\Exception\InvalidDatabaseConnectionException;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validation;
 
-abstract class AbstractTransformationConfiguration implements SectionConfigurationInterface
+abstract class AbstractTransformationConfiguration
 {
     public const MAPPING_TARGET_WORDPRESS = 'WordPress';
 
@@ -17,6 +16,9 @@ abstract class AbstractTransformationConfiguration implements SectionConfigurati
         self::MAPPING_TARGET_WORDPRESS => WordPressTransformationConfiguration::class,
     ];
 
+    /**
+     * @param array<string, string> $mapping
+     */
     public function __construct(
         private readonly string $source,
         private readonly string $target,
@@ -25,6 +27,10 @@ abstract class AbstractTransformationConfiguration implements SectionConfigurati
     }
 
     /**
+     * @param array<int|string, string> $config
+     *
+     * @return static|WordPressTransformationConfiguration|self
+     *
      * @throws InvalidDatabaseConnectionException
      */
     public static function fromConfig(array $config): self
@@ -32,7 +38,7 @@ abstract class AbstractTransformationConfiguration implements SectionConfigurati
         $constraint = new Assert\Collection([
             'source'  => new Assert\NotBlank([], 'The source must not be empty.'),
             'target'  => new Assert\NotBlank([], 'The target must not be empty.'),
-            'mapping' => self::getMappingValidationConstraints(),
+            'mapping' => new Assert\Optional(),
         ]);
 
         $validator = Validation::createValidator();
@@ -49,22 +55,32 @@ abstract class AbstractTransformationConfiguration implements SectionConfigurati
 
         $classFQCN = self::SUPPORTED_MAPPINGS[$mappingTarget];
 
-        return new $classFQCN(
+        /** @var array<string, string> $mappingArray */
+        $mappingArray = $config['mapping'];
+
+        /** @var self $classInstance */
+        $classInstance = new $classFQCN(
             source: $config['source'],
             target: $config['target'],
-            mapping: $config['mapping'],
+            mapping: $mappingArray,
         );
+
+        $mappingValidationConstraints = $classInstance->getMappingValidationConstraints();
+
+        $classInstance->validateMapping($mappingArray, $mappingValidationConstraints);
+
+        return $classInstance;
     }
 
-    public static function getMappingValidationConstraints(): Assert\Collection
-    {
-        return new Assert\Collection([]);
-    }
+    abstract public function getMappingValidationConstraints(): Assert\Collection;
 
     /**
-     * @return array
+     * @return array<string, string>
      */
-    abstract public function getMapping(): array;
+    public function getMapping(): array
+    {
+        return $this->mapping;
+    }
 
     public function getSource(): string
     {
@@ -74,5 +90,22 @@ abstract class AbstractTransformationConfiguration implements SectionConfigurati
     public function getTarget(): string
     {
         return $this->target;
+    }
+
+    /**
+     * @param array<string, array<string, string>|string> $mappingArray
+     *
+     * @throws InvalidDatabaseConnectionException
+     */
+    protected function validateMapping(array $mappingArray, Assert\Composite $constraint): void
+    {
+        $mappingValidator = Validation::createValidator();
+        $violations       = $mappingValidator->validate($mappingArray, $constraint);
+
+        if (\count($violations) > 0) {
+            $errorMessage = 'The configuration for the data transformation/mapping is invalid.';
+
+            throw new InvalidDatabaseConnectionException($errorMessage);
+        }
     }
 }
