@@ -104,4 +104,6 @@ abstract class AbstractDatabaseConfiguration
     {
         return $this->user;
     }
+
+    abstract public function getFetcherClassFqcn(): string;
 }

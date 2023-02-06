@@ -17,3 +17,27 @@ services:
       - ./:/var/www/html
     extra_hosts:
       - "host.docker.internal:host-gateway"
+
+  database:
+    image: mysql:8.0.28
+    environment:
+      MYSQL_ROOT_PASSWORD: udt_tool
+      MYSQL_USER: udt_tool
+      MYSQL_PASSWORD: udt_tool
+      MYSQL_DATABASE: udt_tool
+    command:
+      - '--default-authentication-plugin=mysql_native_password'
+      - '--sql_mode='
+      - '--max_allowed_packet=1073741824'
+    volumes:
+      - database:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+    ports:
+      - '3306:3306'
+
+volumes:
+  database:
+    driver: local

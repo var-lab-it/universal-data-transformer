@@ -1,10 +1,10 @@
 database:
   connection:
     driver: pdo_mysql
-    host: localhost
-    database_name: example_db
-    user: test
-    password: test
+    host: database # the service name inside the docker-compose.yml, for local development
+    database_name: udt_tool
+    user: udt_tool
+    password: udt_tool
 
 transformation:
   source: database

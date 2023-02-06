@@ -44,6 +44,15 @@ class Configuration
         return $this->transformationConfiguration;
     }
 
+    public function getTransformerIdentifier(): string
+    {
+        return \sprintf(
+            '%s.%s',
+            $this->getTransformationConfiguration()->getSource(),
+            $this->getTransformationConfiguration()->getTarget(),
+        );
+    }
+
     /**
      * @return array<int|string, array<int|string, array<int|string>>>
      */
