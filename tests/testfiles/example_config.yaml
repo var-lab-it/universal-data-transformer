@@ -1,0 +1,25 @@
+database:
+  connection:
+    driver: pdo_mysql
+    host: database # the service name inside the docker-compose.yml, for local development
+    database_name: udt_tool
+    user: udt_tool
+    password: udt_tool
+
+transformation:
+  source: database
+  target: WordPress
+  mapping:
+    post:
+      title:
+        table: news
+        column: title
+      pubDate:
+        table: news
+        column: created_at
+      content:
+        table: news
+        column: content
+      excerpt:
+        table: news
+        column: excerpt

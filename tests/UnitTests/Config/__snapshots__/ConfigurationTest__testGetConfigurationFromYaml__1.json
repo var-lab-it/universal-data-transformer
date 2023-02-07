@@ -2,10 +2,34 @@
     "database": {
         "connection": {
             "driver": "pdo_mysql",
-            "host": "localhost",
-            "database_name": "example_db",
-            "user": "test",
-            "password": "test"
+            "host": "database",
+            "database_name": "udt_tool",
+            "user": "udt_tool",
+            "password": "udt_tool"
+        }
+    },
+    "transformation": {
+        "source": "database",
+        "target": "WordPress",
+        "mapping": {
+            "post": {
+                "title": {
+                    "table": "news",
+                    "column": "title"
+                },
+                "pubDate": {
+                    "table": "news",
+                    "column": "created_at"
+                },
+                "content": {
+                    "table": "news",
+                    "column": "content"
+                },
+                "excerpt": {
+                    "table": "news",
+                    "column": "excerpt"
+                }
+            }
         }
     }
 }

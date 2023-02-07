@@ -31,7 +31,7 @@ class ConfigurationTest extends TestCase
             ->willReturn(true);
 
         $config = new Configuration(
-            \dirname(__DIR__, 2) . '/testfiles/exampl.yaml',
+            \dirname(__DIR__, 2) . '/testfiles/example_config.yaml',
             $this->filesystemMock,
         );
 
@@ -43,10 +43,34 @@ class ConfigurationTest extends TestCase
         $dbConfig = $config->getDatabaseConfiguration();
 
         self::assertEquals('pdo_mysql', $dbConfig->getDriver());
-        self::assertEquals('localhost', $dbConfig->getHost());
-        self::assertEquals('example_db', $dbConfig->getDatabaseName());
-        self::assertEquals('test', $dbConfig->getUser());
-        self::assertEquals('test', $dbConfig->getPassword());
+        self::assertEquals('database', $dbConfig->getHost());
+        self::assertEquals('udt_tool', $dbConfig->getDatabaseName());
+        self::assertEquals('udt_tool', $dbConfig->getUser());
+        self::assertEquals('udt_tool', $dbConfig->getPassword());
+
+        $transformationConfig = $config->getTransformationConfiguration();
+        self::assertEquals('database', $transformationConfig->getSource());
+        self::assertEquals('WordPress', $transformationConfig->getTarget());
+        self::assertEquals([
+            'post' => [
+                'title'   => [
+                    'table'  => 'news',
+                    'column' => 'title',
+                ],
+                'pubDate' => [
+                    'table'  => 'news',
+                    'column' => 'created_at',
+                ],
+                'content' => [
+                    'table'  => 'news',
+                    'column' => 'content',
+                ],
+                'excerpt' => [
+                    'table'  => 'news',
+                    'column' => 'excerpt',
+                ],
+            ],
+        ], $transformationConfig->getMapping());
     }
 
     public function testLoadWithNotExistingFile(): void
@@ -71,7 +95,7 @@ class ConfigurationTest extends TestCase
             ->willReturn(true);
 
         $config = new Configuration(
-            \dirname(__DIR__, 2) . '/testfiles/exampl.yaml',
+            \dirname(__DIR__, 2) . '/testfiles/example_config.yaml',
             $this->filesystemMock,
         );
 
@@ -80,6 +104,6 @@ class ConfigurationTest extends TestCase
 
         $result = $method->invoke($config);
 
-        self::assertMatchesJsonSnapshot($result);
+        $this->assertMatchesJsonSnapshot($result);
     }
 }

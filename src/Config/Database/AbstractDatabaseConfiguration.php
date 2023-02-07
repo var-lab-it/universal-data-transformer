@@ -17,9 +17,6 @@ abstract class AbstractDatabaseConfiguration
         self::DRIVER_PDO_MYSQL => PdoMySqlConnection::class,
     ];
 
-    /**
-     * @throws InvalidDatabaseDriverException
-     */
     public function __construct(
         private readonly string $driver,
         private readonly string $host,
@@ -38,9 +35,10 @@ abstract class AbstractDatabaseConfiguration
      *     password: string,
      * } $config
      *
-     * @return AbstractDatabaseConfiguration|PdoMySqlConnection
+     * @return AbstractDatabaseConfiguration
      *
      * @throws InvalidDatabaseConnectionException
+     * @throws InvalidDatabaseDriverException
      */
     public static function fromConfig(array $config): self
     {
@@ -106,4 +104,6 @@ abstract class AbstractDatabaseConfiguration
     {
         return $this->user;
     }
+
+    abstract public function getFetcherClassFqcn(): string;
 }
